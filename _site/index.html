@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width">
+
+        <title>MSMVSampEn : About</title>
+        <meta name="description" content="Multiscale multivariate sample entropy in R">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/MSMVSampEn-site/css/syntax.css">
+        <link rel="stylesheet" href="/MSMVSampEn-site/css/main.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div id="header" class="col-sm-12">
+                    <h4><a class="brand" href="/MSMVSampEn-site/">MSMVSampEn</a>
+    <small>Multiscale multivariate sample entropy in R</small>
+</h4>
+
+                </div>
+            </div>
+
+            <div class="row">
+                
+                
+                    <div id="navigation" class="col-sm-2">
+                        <ul class="nav nav-pills nav-stacked">
+    <li><a href="/MSMVSampEn-site/">Home</a></li>
+    
+        
+        
+
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Documentation</li>
+            
+            <li data-order="1"><a href="/MSMVSampEn-site/doc/theory.html">Theory and computation</a></li>
+        
+    
+        
+        
+
+        
+    
+<!-- List additional links. It is recommended to add a divider
+    e.g. <li class="divider"></li> first to break up the content. -->
+</ul>
+
+                    </div>
+
+                    <div id="content" class="col-sm-10">
+                        <p><code class="language-plaintext highlighter-rouge">MSMVSampEn</code> is an R package for computing multiscale, multivariate sample entropy of biological signals. A more in-depth discussion of MSMV sample entropy can be found in Ahmed and Mandic (2011), and the the package is a relatively faithfull translation of the author’s Matlab code, although several changes have been made for speed and efficiency.</p>
+
+<ul>
+  <li>The embedding function has been rewritten in C++, for a substantial speedup.</li>
+  <li>The authors estimate B<sup>m</sup>(r) by computing the full distance matrix
+for the embedded delay vectors, which can easily exhaust system RAM for even
+moderately sized datasets. Instead, MSMVSampEn simply tally the number of vectors lying
+within the distance threshold r, sidestepping the distance matrix calculation
+entirely. This, too, is implemented in C++.</li>
+</ul>
+
+<p>MSMVSampEn is capable of computing sample entropy for univariate or multivariate signals at arbitrary time scales. Currently, it only implements the coarsegraining procedure described by Ahmed and Mandic, although, as Humeau-Heurtier (2015) points out, this method has serious shortcomings. In the future, I hope to implement more sophistic methods of extracting informations at larger timescales.</p>
+
+<p>The package allows for the specification of an arbitrary summary statistic to be used during coarsegraining by passing a function argument to MSMVSampEn(). This function is applied to each bin during coarsegraining. When this function in the mean (default), this gives the usual sample entropy, though, as Humeau-Heurtier mentions, other statistics (such as higher moments), are occasionally interesting.</p>
+
+<p>Ahmed, M. U., &amp; Mandic, D. P. (2011). Multivariate multiscale entropy: A tool for complexity analysis of multichannel data. Physical Review E, 84(6), 061918.</p>
+
+<p>Humeau-Heurtier, A. (2015). The multiscale entropy algorithm and its variants: A review. Entropy, 17(5), 3110-3123.</p>
+
+<h2 id="installation">Installation</h2>
+<p>The package can be installed directly from the Gitlab repository using the <code class="language-plaintext highlighter-rouge">devtools</code> package with</p>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">devtools</span><span class="o">::</span><span class="n">install_git</span><span class="p">(</span><span class="s1">'https://github.com/areshenk/MSSampEn'</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Alternately, the repository can be cloned to a local machine and installed through the terminal by running</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>R CMD INSTALL MSMVSampEn
+</code></pre></div></div>
+<p>in the directory containing the folder.</p>
+
+                    </div>
+                
+            </div>
+
+            
+
+            <div class="row">
+                <div id="footer" class="col-sm-12">
+                    Documentation for <a href="https://github.com/areshenk/MSMVSampEn">MSMVSampEn</a>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function orderNav() {
+                var list,
+                    section,
+                    header,
+                    sections = [],
+                    lists = {},
+                    headers = {};
+                
+                var locationObj = document.location.href;
+                
+                var navUl = document.querySelectorAll('#navigation ul')[0],
+                    navLis = document.querySelectorAll('#navigation ul li');
+
+                if (!navUl) return;
+
+                for (var i = 0; i < navLis.length; i++) {
+                    var order, li = navLis[i];
+
+                    if (li.classList.contains('nav-header')) {
+                        section = li.textContent || li.innerText;
+                        sections.push(section);
+                        headers[section] = li;
+                        continue;
+                    }
+
+                    var link = li.childNodes[0];
+                    if (locationObj && link && locationObj.endsWith(link.getAttribute('href'))) {
+                        li.classList.add('active');
+                    }
+                    
+                    if (!lists[section]) {
+                        lists[section] = [];
+                    }
+
+                    order = parseFloat(li.getAttribute('data-order'))
+                    lists[section].push([order, li]);
+                }
+
+                for (var i = 0; i < sections.length; i++) {
+                    section = sections[i];
+                    list = lists[section].sort(function(a, b) {
+                        return a[0] - b[0];
+                    });
+
+                    if (header = headers[section]) {
+                        navUl.appendChild(header);
+                    }
+                    for (var j = 0; j < list.length; j++) {
+                        navUl.appendChild(list[j][1]);
+                    }
+                }
+            }
+
+            if (document.querySelectorAll) orderNav();
+        </script>
+        
+    </body>
+</html>
