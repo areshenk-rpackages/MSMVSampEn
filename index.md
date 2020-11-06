@@ -24,7 +24,7 @@ Humeau-Heurtier, A. (2015). The multiscale entropy algorithm and its variants: A
 The package can be installed directly from the Gitlab repository using the `devtools` package with
 
 ```r
-devtools::install_git('https://github.com/areshenk/MSSampEn')
+devtools::install_git('https://github.com/areshenk/MSMVSampEn')
 ```
 
 Alternately, the repository can be cloned to a local machine and installed through the terminal by running
