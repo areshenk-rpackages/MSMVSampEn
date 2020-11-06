@@ -15,18 +15,18 @@ MVSampEn <- function(mat, M, tau, r, scale = TRUE){
   if (!is.matrix(mat))
     stop('mat must be a matrix')
 
-  if (!(is.numeric(M) && length(M) == nrows(mat) || length(M) == 1))
+  if (!(is.numeric(M) && length(M) == nrow(mat) || length(M) == 1))
     stop('M must be a scalar, or a vector of length equal to the rows of mat')
   if (length(M) == 1)
-    M <- rep(M, nrows(mat))
+    M <- rep(M, nrow(mat))
 
   if (any(M <= 0))
     stop('M must be positive')
 
-  if (!(is.numeric(tau) && length(tau) == nrows(mat) || length(tau) == 1))
+  if (!(is.numeric(tau) && length(tau) == nrow(mat) || length(tau) == 1))
     stop('tau must be a scalar, or a vector of length equal to the rows of mat')
   if (length(tau) == 1)
-    tau <- rep(tau, nrows(mat))
+    tau <- rep(tau, nrow(mat))
 
   if (any(tau <= 0))
     stop('tau must be positive')
